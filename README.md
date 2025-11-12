@@ -161,3 +161,4 @@ public static float CalcAvEmployees(Dictionary<string, string> employees)
 - Включена обработка ошибок ввода
 - Код следует принципам чистого кода
 - Каждая задача независима и может тестироваться отдельно
+->licked запросы под запретом
