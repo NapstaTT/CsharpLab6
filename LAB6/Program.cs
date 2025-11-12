@@ -194,32 +194,100 @@ namespace LAB6
                             {
                                 Console.WriteLine("Работа с текстовым файлом");
                                 Console.WriteLine("Введите полный путь до файла:");
-
-                                string filePath;
-                                bool fileExists = false;
-
-                                while (!fileExists)
+                                Console.WriteLine("1 - использовать существующий файл");
+                                Console.WriteLine("2 - создать новый файл");
+                                bool ch = false;
+                                while (!ch)
                                 {
-                                    filePath = Console.ReadLine();
+                                    string choice = Console.ReadLine();
+                                    switch (choice)
+                                    {
+                                        case "1":
+                                        {
+                                            Console.WriteLine("Введите полый путь до файла");
+                                            while (true)
+                                            {
+                                                string filepath = Console.ReadLine();
+                                                if (string.IsNullOrWhiteSpace(filepath))
+                                                {
+                                                    Console.WriteLine("Ошибка, путь не может быть пустым");
+                                                    continue;
+                                                }
 
-                                    if (string.IsNullOrWhiteSpace(filePath))
-                                    {
-                                        Console.WriteLine("Ошибка! Путь не может быть пустым. Введите путь снова:");
-                                        continue;
-                                    }
+                                                if (File.Exists(filepath))
+                                                {
+                                                    Console.WriteLine("Файл найден!");
+                                                    ch = true;
+                                                    LAB6N15.PrintCons(filepath);
+                                                    break;
+                                                }
+                                            }
 
-                                    if (File.Exists(filePath))
-                                    {
-                                        fileExists = true;
-                                        Console.WriteLine("Файл найден!");
-                                        LAB6N15.PrintCons(filePath);
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Файл не найден! Проверьте путь и введите снова:");
+                                            break;
+                                        }
+                                        case "2":
+                                        {
+                                            Console.WriteLine("Введите полный путь до нового файла");
+                                            while(true)
+                                            {
+                                                string filepath = Console.ReadLine();
+                                                if (string.IsNullOrWhiteSpace(filepath))
+                                                {
+                                                    Console.WriteLine("Ошибка, путь не может быть пустым");
+                                                    continue;
+                                                }
+                                                if (File.Exists(filepath))
+                                                {
+                                                    Console.WriteLine("Файл уже существует. Перезаписать? (y/n");
+                                                    string answer = Console.ReadLine();
+                                                    if (answer?.ToLower() == "y")
+                                                        break;
+                                                    else
+                                                    {
+                                                        Console.WriteLine("Введите другой путь:");
+                                                        continue;
+                                                    }
+                                                }
+
+                                                try
+                                                {
+                                                    Console.WriteLine(
+                                                        "Введите содержимое файла (пустую строку для завершения):");
+
+                                                    using (StreamWriter writer = new StreamWriter(filepath))
+                                                    {
+                                                        string line;
+                                                        int lineNumber = 1;
+                                                        while (true)
+                                                        {
+                                                            Console.Write($"Строка {lineNumber}");
+                                                            line = Console.ReadLine();
+                                                            if (string.IsNullOrEmpty(line))
+                                                                break;
+                                                            writer.WriteLine(line);
+                                                            lineNumber++;
+                                                        }
+                                                    }
+
+                                                    Console.WriteLine("Файл успешни создан и заполнен.");
+                                                    ch = true;
+                                                    LAB6N15.PrintCons(filepath);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Console.WriteLine("Ошибка при создании файла.");
+                                                    continue;
+                                                }
+                                                break;
+                                            }
+                                        }
+                                            break;
+                                        default:
+                                            Console.WriteLine("Введите 1 для ввода пути к файлу или 2 для создания нового файла.");
+                                            break;
                                     }
                                 }
+
                                 break;
                             }
                         case 5:
